@@ -3,24 +3,24 @@ import { db } from "./firebase";
 import { doc, getDoc } from "firebase/firestore";
 
 function App() {
-  const [word, setWord] = useState("");
+  const [message, setMessage] = useState("");
 
   useEffect(() => {
-    const fetchWord = async () => {
-      const docRef = doc(db, "games", "today");
+    const fetchMessage = async () => {
+      const docRef = doc(db, "testData", "sample");
       const docSnap = await getDoc(docRef);
       if (docSnap.exists()) {
-        setWord(docSnap.data().word);
+        setMessage(docSnap.data().message);
       }
     };
 
-    fetchWord();
+    fetchMessage();
   }, []);
 
   return (
     <div>
-      <h1>Reverse Wordle</h1>
-      <p>Today's Word: {word}</p>
+      <h1>Reverse Wordle MVP</h1>
+      <p>Message from Firebase: {message}</p>
     </div>
   );
 }
