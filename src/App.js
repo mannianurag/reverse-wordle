@@ -1,4 +1,5 @@
 import React from "react";
+import "./index.css"; // Ensure Tailwind is included
 
 const GameGrid = () => {
   const grid = Array.from({ length: 5 }, () => Array(5).fill(""));
@@ -10,7 +11,8 @@ const GameGrid = () => {
           {row.map((_, colIndex) => (
             <div
               key={colIndex}
-              className="w-12 h-12 border-2 border-gray-400 flex items-center justify-center text-lg font-bold"
+              className="w-12 h-12 flex items-center justify-center text-lg font-bold border border-black bg-gray-200"
+              style={{ width: "48px", height: "48px", border: "2px solid black" }} // Fallback styles
             >
               {/* Placeholder for letters */}
             </div>
