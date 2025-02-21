@@ -1,5 +1,17 @@
 import React from "react";
 
+import React from "react";
+
+function App() {
+  return (
+    <div>
+      <h1>Hello, Reverse Wordle!</h1>
+    </div>
+  );
+}
+
+export default App;
+
 const GameGrid = () => {
   const grid = Array(5).fill(Array(5).fill(""));
 
