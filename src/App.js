@@ -1,5 +1,6 @@
 import React from "react";
 import "./index.css"; // Ensure Tailwind is included
+import GameGrid from "./GameGrid";
 
 const GameGrid = () => {
   const grid = Array.from({ length: 5 }, () => Array(5).fill(""));
@@ -22,10 +23,9 @@ const GameGrid = () => {
   );
 };
 
-
 function App() {
   return (
-    <div className="min-h-screen flex flex-col items-center justify-center bg-gray-100">
+    <div className="flex flex-col items-center p-4">
       <h1 className="text-2xl font-bold mb-4">Reverse Wordle</h1>
       <GameGrid />
     </div>
