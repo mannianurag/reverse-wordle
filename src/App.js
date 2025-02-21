@@ -12,7 +12,7 @@ const GameGrid = () => {
             <div
               key={colIndex}
               className="w-12 h-12 flex items-center justify-center text-lg font-bold border border-black bg-gray-200"
-              style={{ width: "48px", height: "48px", border: "2px solid black" }} // Fallback styles
+              style={{ width: "48px", height: "48px", border: "2px solid black" }}
             >
               {/* Placeholder for letters */}
             </div>
