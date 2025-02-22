@@ -9,21 +9,23 @@ function App() {
     Array(GRID_SIZE).fill(null).map(() => Array(GRID_SIZE).fill(""))
   );
   const [rowStatus, setRowStatus] = useState(Array(GRID_SIZE).fill(null));
+  const [currentRow, setCurrentRow] = useState(0);
+  const [version] = useState("1.1");
 
   const handleInputChange = (row, col, value) => {
     if (!/^[a-zA-Z]$/.test(value)) return;
+    if (row !== currentRow) return; // Prevent typing in future rows
 
     const newGrid = grid.map((r) => [...r]); // Deep copy grid
     newGrid[row][col] = value.toUpperCase();
     setGrid(newGrid);
 
-    // Move focus to the next cell
+    // Move focus to the next cell in the same row
     const nextCol = col + 1;
-    const nextRow = row + (nextCol >= GRID_SIZE ? 1 : 0);
-    const nextCell = document.getElementById(
-      `cell-${nextRow}-${nextCol % GRID_SIZE}`
-    );
-    if (nextCell) nextCell.focus();
+    if (nextCol < GRID_SIZE) {
+      const nextCell = document.getElementById(`cell-${row}-${nextCol}`);
+      if (nextCell) nextCell.focus();
+    }
   };
 
   const handleKeyDown = (row, col, event) => {
@@ -32,16 +34,18 @@ function App() {
       const newGrid = grid.map((r) => [...r]); // Deep copy grid
       if (newGrid[row][col]) {
         newGrid[row][col] = "";
-      } else if (col > 0 || row > 0) {
-        const prevCol = col === 0 ? GRID_SIZE - 1 : col - 1;
-        const prevRow = col === 0 ? row - 1 : row;
-        newGrid[prevRow][prevCol] = "";
-        const prevCell = document.getElementById(
-          `cell-${prevRow}-${prevCol}`
-        );
+      } else if (col > 0) {
+        const prevCol = col - 1;
+        newGrid[row][prevCol] = "";
+        const prevCell = document.getElementById(`cell-${row}-${prevCol}`);
         if (prevCell) prevCell.focus();
       }
       setGrid(newGrid);
+    }
+
+    if (event.key === "Enter") {
+      event.preventDefault();
+      validateRow(row);
     }
   };
 
@@ -54,12 +58,15 @@ function App() {
         newStatus[rowIndex] = isValid;
         return newStatus;
       });
+      if (isValid && rowIndex < GRID_SIZE - 1) {
+        setCurrentRow(rowIndex + 1); // Move to next row only if valid
+      }
     }
   };
 
   return (
     <div className="container">
-      <h1>Reverse Wordle</h1>
+      <h1>Reverse Wordle (v{version})</h1>
       <div className="grid">
         {grid.map((row, rowIndex) => (
           <div
@@ -76,7 +83,7 @@ function App() {
                 value={cell}
                 onChange={(e) => handleInputChange(rowIndex, colIndex, e.target.value)}
                 onKeyDown={(e) => handleKeyDown(rowIndex, colIndex, e)}
-                onBlur={() => validateRow(rowIndex)}
+                disabled={rowIndex > currentRow} // Disable future rows
               />
             ))}
           </div>
