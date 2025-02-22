@@ -24,3 +24,11 @@
   font-weight: bold;
   border: 2px solid black;
 }
+
+.row.invalid {
+  background-color: lightcoral;
+}
+
+.row.valid {
+  background-color: lightgreen;
+}
