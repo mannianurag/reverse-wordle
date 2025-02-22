@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import "./App.css";
-
+import { useEffect } from "react";
 const GRID_SIZE = 5;
 const VALID_WORDS = ["APPLE", "HOUSE", "GHOST", "PLANE", "BRICK"]; // Replace with API later
 
@@ -8,14 +8,26 @@ function App() {
   const [grid, setGrid] = useState(Array(GRID_SIZE).fill(Array(GRID_SIZE).fill("")));
   const [rowStatus, setRowStatus] = useState(Array(GRID_SIZE).fill(null)); // Track row validation
 
-  const handleInputChange = (row, col, value) => {
+ const handleInputChange = (row, col, value) => {
     if (!/^[a-zA-Z]$/.test(value)) return;
-
-    const newGrid = grid.map((r, rowIndex) =>
-      r.map((cell, colIndex) =>
-        rowIndex === row && colIndex === col ? value.toUpperCase() : cell
-      )
-    );
+  
+    const newGrid = grid.map((r) => [...r]); // Deep copy grid
+    newGrid[row][col] = value.toUpperCase();
+    setGrid(newGrid);
+  };
+  
+  useEffect(() => {
+    grid.forEach((row, rowIndex) => {
+      const word = row.join(""); 
+      if (word.length === GRID_SIZE) { // Only validate when row is full
+        setRowStatus((prev) => {
+          const newStatus = [...prev];
+          newStatus[rowIndex] = VALID_WORDS.includes(word);
+          return newStatus;
+        });
+      }
+    });
+  }, [grid]);
 
     setGrid(newGrid);
 
