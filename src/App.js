@@ -47,12 +47,14 @@ function App() {
 
   const validateRow = (rowIndex) => {
     const word = grid[rowIndex].join(""); // Get full word from row
-    const isValid = VALID_WORDS.includes(word);
-    setRowStatus((prev) => {
-      const newStatus = [...prev];
-      newStatus[rowIndex] = isValid;
-      return newStatus;
-    });
+    if (word.length === GRID_SIZE) { // Only validate when row is full
+      const isValid = VALID_WORDS.includes(word);
+      setRowStatus((prev) => {
+        const newStatus = [...prev];
+        newStatus[rowIndex] = isValid;
+        return newStatus;
+      });
+    }
   };
 
   return (
