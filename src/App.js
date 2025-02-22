@@ -9,7 +9,7 @@ function App() {
   );
 
   const handleInputChange = (row, col, value) => {
-    if (value.length > 1) return; // Allow only one character
+    if (!/^[a-zA-Z]$/.test(value)) return; // Allow only A-Z, ignore everything else
 
     const newGrid = grid.map((r, rowIndex) =>
       r.map((cell, colIndex) =>
